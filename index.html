@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FitterField Pro — Field App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#071525;--navy2:#0d2238;--blue:#1683ff;--cyan:#27d3ee;--orange:#ff8a25;--bg:#eef4f8;--card:#fff;--ink:#102033;--muted:#64768a;--line:#dbe5ed;--good:#20b486;--danger:#d94a4a;--shadow:0 12px 35px rgba(7,21,37,.08);--r:18px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif}.app{min-height:100vh}.top{height:68px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:10}.brand{display:flex;align-items:center;gap:10px;font-weight:800}.mark{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--cyan));font-size:13px}.top small{color:#8fa5b9}.top-actions{display:flex;align-items:center;gap:10px}.ai-top{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;padding:10px 12px;font-weight:800;cursor:pointer}.layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 68px)}aside{background:#fff;border-right:1px solid var(--line);padding:20px 14px}.navbtn{width:100%;border:0;background:none;text-align:left;padding:13px 14px;border-radius:12px;cursor:pointer;color:#526579;font-weight:700;font-size:13px;margin:2px 0}.navbtn.active,.navbtn:hover{background:#eaf6ff;color:var(--navy)}main{padding:28px;max-width:1250px;width:100%;margin:auto}.view{display:none}.view.active{display:block}.head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px}.kicker{font-size:10px;letter-spacing:1.8px;font-weight:800;color:var(--blue)}h1,h2,h3{font-family:"Barlow Condensed",Impact,sans-serif;text-transform:uppercase}h1{font-size:46px;line-height:.95;margin:6px 0}h2{font-size:32px;margin:0 0 8px}h3{font-size:23px;margin:0 0 8px}.sub{color:var(--muted);font-size:13px;line-height:1.6}.grid{display:grid;gap:16px}.four{grid-template-columns:repeat(4,1fr)}.three{grid-template-columns:repeat(3,1fr)}.two{grid-template-columns:repeat(2,1fr)}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}.stat strong{display:block;font-family:"Barlow Condensed";font-size:40px}.stat span{font-size:11px;color:var(--muted)}.accent{border-top:4px solid var(--cyan)}.orange{border-top:4px solid var(--orange)}.blue{border-top:4px solid var(--blue)}.green{border-top:4px solid var(--good)}button,.btn{font-family:inherit}.primary{border:0;background:var(--orange);color:#101820;font-weight:800;padding:12px 16px;border-radius:11px;cursor:pointer}.secondary{border:1px solid var(--line);background:#fff;padding:11px 14px;border-radius:10px;cursor:pointer;font-weight:700}.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.tool{padding:17px;border:1px solid var(--line);border-radius:15px;background:#fff;cursor:pointer}.tool:hover{border-color:#9fdff0;box-shadow:var(--shadow)}.tool .emoji{font-size:26px;float:left;margin-right:12px}.tool b{font-size:13px}.tool small{display:block;color:var(--muted);margin-top:3px}.form{display:grid;gap:12px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{font-size:11px;font-weight:800;color:#526579}input,textarea,select{width:100%;margin-top:6px;border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit;background:#fff}textarea{min-height:130px;resize:vertical}.note{padding:13px;border-radius:12px;background:#f5f9fc;border:1px solid var(--line);font-size:12px}.list{display:grid;gap:10px}.item{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}.pill{font-size:10px;font-weight:800;border-radius:99px;padding:6px 9px;background:#e7f8f4;color:#13785c}.bar{height:9px;background:#e4edf3;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:inherit}.calc{display:grid;grid-template-columns:1fr 1fr;gap:16px}.result{background:var(--navy);color:#fff;border-radius:15px;padding:20px}.result strong{font-family:"Barlow Condensed";font-size:45px;color:var(--cyan)}.empty{color:var(--muted);font-size:13px;padding:20px 0}.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:13px 16px;border-radius:11px;box-shadow:var(--shadow);display:none;font-size:12px;z-index:50}
+.ai-fab{position:fixed;right:20px;bottom:20px;z-index:40;border:0;border-radius:999px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;padding:15px 18px;font-weight:900;box-shadow:0 14px 35px rgba(7,21,37,.25);cursor:pointer}.ai-panel{position:fixed;right:20px;bottom:82px;width:min(430px,calc(100vw - 28px));height:min(650px,calc(100vh - 110px));background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 70px rgba(7,21,37,.25);z-index:45;display:none;overflow:hidden}.ai-panel.open{display:flex;flex-direction:column}.ai-head{background:var(--navy);color:#fff;padding:16px;display:flex;align-items:center;justify-content:space-between}.ai-title{display:flex;align-items:center;gap:10px}.ai-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--cyan));font-size:18px}.ai-close{border:0;background:transparent;color:#fff;font-size:22px;cursor:pointer}.ai-body{flex:1;overflow:auto;padding:14px;background:#f7fafc}.ai-msg{max-width:90%;padding:11px 13px;border-radius:15px;margin:8px 0;font-size:13px;line-height:1.5;white-space:pre-wrap}.ai-msg.user{margin-left:auto;background:#eaf6ff;border:1px solid #c9e8ff}.ai-msg.bot{margin-right:auto;background:#fff;border:1px solid var(--line)}.ai-status{padding:8px 14px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);display:none}.ai-compose{padding:12px;border-top:1px solid var(--line);background:#fff}.ai-row{display:flex;gap:8px;align-items:flex-end}.ai-input{flex:1;min-height:48px;max-height:120px;resize:vertical}.mic-btn{width:48px;height:48px;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font-size:20px}.mic-btn.recording{background:#ffe7e7;border-color:#ff9a9a}.send-btn{height:48px;width:55px;border:0;border-radius:12px;background:var(--orange);font-weight:900;cursor:pointer}.ai-hint{font-size:10px;color:var(--muted);margin-top:7px}.ai-handsfree{display:flex;gap:8px;margin-top:8px;align-items:center;font-size:11px;color:var(--muted)}
+
+.formtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.formtab{border:1px solid var(--line);background:#fff;padding:10px 13px;border-radius:10px;font-weight:800;cursor:pointer}.formtab.active{background:#eaf6ff;color:var(--navy);border-color:#9fdff0}.formview{display:none}.formview.active{display:block}.checkgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.check{display:flex;gap:9px;align-items:flex-start;padding:11px;border:1px solid var(--line);border-radius:10px;background:#f9fbfd;font-size:12px}.check input{width:auto;margin:2px 0 0}.form-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.smallprint{font-size:10px;color:var(--muted);line-height:1.5}.dangerbox{border:1px solid #f0b3b3;background:#fff6f6;padding:12px;border-radius:12px;font-size:12px}.savedforms{display:grid;gap:10px}.savedform{padding:13px;border:1px solid var(--line);border-radius:12px;background:#fff}.savedform strong{display:block}
+.head-actions{display:flex;gap:10px;flex-wrap:wrap}.head .head-actions button{margin-top:0}
+.voice-fab{position:fixed;right:20px;bottom:76px;z-index:40;width:60px;height:60px;border:0;border-radius:50%;background:var(--orange);color:#101820;display:grid;place-items:center;cursor:pointer;box-shadow:0 14px 35px rgba(255,138,37,.4)}
+.voice-fab svg,.voice-orb svg{width:26px;height:26px}
+body.voice-open .voice-fab,body.voice-open .ai-fab{display:none}
+.voice-fab:focus-visible,.voice-orb:focus-visible,.voice-chip:focus-visible,.voice-x:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.voice-sheet{position:fixed;right:20px;bottom:20px;width:min(420px,calc(100vw - 24px));background:var(--navy);color:#fff;border-radius:22px;box-shadow:0 24px 70px rgba(7,21,37,.4);z-index:48;padding:16px;display:none}
+.voice-sheet.open{display:block}
+.voice-head{display:flex;align-items:center;gap:14px}
+.voice-orb{flex:none;width:64px;height:64px;border-radius:50%;border:0;background:var(--orange);color:#101820;display:grid;place-items:center;cursor:pointer;position:relative}
+.voice-orb:after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--orange);opacity:0;pointer-events:none}
+.voice-sheet[data-state=listening] .voice-orb:after{animation:voicePulse 1.4s ease-out infinite}
+.voice-sheet[data-state=thinking] .voice-orb{background:var(--cyan);cursor:default}
+.voice-sheet[data-state=error] .voice-orb{background:#ff9b9b}
+@keyframes voicePulse{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+.voice-text{flex:1;min-width:0}
+.voice-state{font-weight:800;font-size:15px}
+.voice-heard{font-size:13px;color:#b7c8d8;margin-top:3px;line-height:1.4;overflow-wrap:anywhere;min-height:18px}
+.voice-x{flex:none;align-self:flex-start;border:0;background:transparent;color:#8fa5b9;font-size:26px;cursor:pointer;line-height:1;padding:2px 8px}
+.voice-result{margin-top:12px;display:grid;gap:6px}
+.voice-result:empty{display:none}
+.voice-step{font-size:13px;line-height:1.45;background:rgba(255,255,255,.07);border-radius:10px;padding:9px 11px;overflow-wrap:anywhere}
+.voice-step.bad{background:rgba(255,107,107,.18)}
+.voice-step.note{background:rgba(39,211,238,.12);color:#c9f3fa}
+.voice-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.voice-sheet[data-state=listening] .voice-chips,.voice-sheet[data-state=thinking] .voice-chips,.voice-sheet[data-state=done] .voice-chips{display:none}
+.voice-chip{border:1px solid rgba(255,255,255,.22);background:transparent;color:#dbe8f3;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:600;cursor:pointer}
+.voice-chip:hover{background:rgba(255,255,255,.09)}
+.voice-opt{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:11px;color:#8fa5b9;font-weight:600}
+.voice-opt input{width:auto;margin:0}
+.voice-filled{box-shadow:0 0 0 3px rgba(39,211,238,.6);border-color:var(--cyan)}
+@media(prefers-reduced-motion:reduce){.voice-sheet[data-state=listening] .voice-orb:after{animation:none;opacity:.7}}
+.code-tools{display:flex;gap:10px;margin:0 0 12px}
+.code-tools input{flex:1;min-width:0;margin:0;padding:13px 14px;border:1px solid var(--line);border-radius:11px;font:inherit;background:#fff}
+.code-chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.code-chip{border:1px solid var(--line);background:#fff;padding:9px 13px;border-radius:99px;font-weight:700;font-size:12px;cursor:pointer;color:#33485c}
+.code-chip.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.code-link{display:inline-block;text-decoration:none;color:inherit}
+.code-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.code-card{display:flex;flex-direction:column;gap:5px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;text-decoration:none;color:inherit}
+.code-card:hover{border-color:#9fb6c9}
+.code-card:focus-visible,.code-chip:focus-visible,.code-link:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+.code-num{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:800;font-size:23px;letter-spacing:.02em;color:var(--navy);line-height:1.1}
+.code-card b{font-size:14px;line-height:1.35}
+.code-card small{color:var(--muted);font-size:12.5px;line-height:1.45}
+.code-go{margin-top:auto;padding-top:6px;font-size:12px;font-weight:800;color:#0b6bd6}
+.code-note{color:var(--muted);font-size:12px;line-height:1.55;margin-top:16px}
+@media(max-width:700px){.code-grid{grid-template-columns:1fr}}
+@media(max-width:900px){.ai-fab{right:12px;bottom:76px}.voice-fab{right:12px;bottom:140px}.voice-sheet{left:12px;right:12px;width:auto;max-width:460px;margin-left:auto;bottom:77px}.toast{top:80px;bottom:auto;left:50%;right:auto;transform:translateX(-50%)}.layout{grid-template-columns:1fr}aside{position:fixed;bottom:0;left:0;right:0;height:65px;z-index:15;padding:6px;display:flex;overflow:auto;border-top:1px solid var(--line);border-right:0}.navbtn{min-width:105px;text-align:center;margin:0}.four{grid-template-columns:1fr 1fr}.three{grid-template-columns:1fr 1fr}main{padding:22px 16px 90px}}@media(max-width:560px){.top{padding:0 14px}.top-actions small{display:none}.four,.three,.two,.calc,.tools,.row{grid-template-columns:1fr}h1{font-size:40px}.head{display:block}.head button{margin-top:12px}.ai-panel{right:10px;bottom:74px;height:calc(100vh - 90px)}.ai-fab{right:12px;bottom:76px}}
+</style>
+</head>
+<body><div class="app">
+<header class="top"><div class="brand"><span class="mark">FF</span><span>FitterField™ <small>PRO</small></span></div><div class="top-actions"><button class="ai-top" onclick="openAI()">🤖 Ask FitterField AI</button><small id="saveStatus">Saved locally</small></div></header>
+<div class="layout"><aside>
+<button class="navbtn active" data-view="dashboard">🏠 Dashboard</button><button class="navbtn" data-view="tools">🧮 Field Tools</button><button class="navbtn" data-view="reference">🔧 Reference</button><button class="navbtn" data-view="notes">📝 Job Notes</button><button class="navbtn" data-view="safety">🦺 Safety Forms</button><button class="navbtn" data-view="codes">📖 NFPA Codes</button><button class="navbtn" data-view="challenges">🎯 Challenges</button>
+</aside><main>
+<section id="dashboard" class="view active"><div class="head"><div><div class="kicker">FIELD COMMAND CENTER</div><h1>Ready for the job.</h1><p class="sub">Your field tools, notes, NFPA codes and AI field assistant in one place.</p></div><div class="head-actions"><button class="secondary" onclick="toggleVoice()">🎙️ Talk to the app</button><button class="primary" onclick="openAI()">🤖 Ask FitterField AI</button></div></div><div class="grid four"><div class="card stat accent"><strong id="jobCount">0</strong><span>Saved Jobs</span></div><div class="card stat blue"><strong id="formCount">0</strong><span>Saved Forms</span></div><div class="card stat orange"><strong id="challengeScore">0</strong><span>Challenge Points</span></div><div class="card stat green"><strong id="noteCount">0</strong><span>Field Notes</span></div></div><div style="height:16px"></div><div class="grid two"><div class="card"><h3>Quick Tools</h3><div class="tools"><div class="tool" onclick="showView('tools')"><span class="emoji">📏</span><b>Feet & Inches</b><small>Fast conversion</small></div><div class="tool" onclick="showView('tools')"><span class="emoji">➗</span><b>Field Math</b><small>Common calculations</small></div><div class="tool" onclick="showView('reference')"><span class="emoji">🔩</span><b>Fittings</b><small>Quick reference</small></div><div class="tool" onclick="showView('notes')"><span class="emoji">📓</span><b>Job Notes</b><small>Record the work</small></div></div></div><div class="card"><h3>NFPA Codes &amp; Standards</h3><p class="sub">Look up the codes and standards behind the work and open the official NFPA pages.</p><button class="secondary" onclick="showView('codes')">Browse NFPA Codes</button></div></div></section>
+<section id="tools" class="view"><div class="head"><div><div class="kicker">FIELD TOOLS</div><h1>Do the math. Keep moving.</h1><p class="sub">Practical calculators designed for quick field use.</p></div></div><div class="card"><h3>Feet + Inches Converter</h3><div class="calc"><div class="form"><label>Feet<input id="feet" type="number" min="0" value="0"></label><label>Inches<input id="inches" type="number" min="0" value="0"></label><button class="primary" onclick="convertLength()">Convert</button></div><div class="result"><span>Total inches</span><br><strong id="totalInches">0.00</strong></div></div></div><div style="height:16px"></div><div class="grid three"><div class="card"><h3>Fraction → Decimal</h3><label>Fraction<input id="frac" placeholder="e.g. 3/8"></label><button class="primary" style="margin-top:10px" onclick="fractionToDecimal()">Calculate</button><p class="sub" id="fracResult">—</p></div><div class="card"><h3>Decimal → Inches</h3><label>Decimal<input id="dec" type="number" step="0.001" placeholder="e.g. 2.375"></label><button class="primary" style="margin-top:10px" onclick="decimalToFraction()">Calculate</button><p class="sub" id="decResult">—</p></div><div class="card"><h3>Pipe Run Total</h3><label>Number of pieces<input id="pieces" type="number" min="1" value="1"></label><label>Piece length (in)<input id="pieceLen" type="number" step="0.01" value="0"></label><button class="primary" style="margin-top:10px" onclick="pipeTotal()">Calculate</button><p class="sub" id="pipeResult">—</p></div></div></section>
+<section id="reference" class="view"><div class="head"><div><div class="kicker">REFERENCE</div><h1>Quick lookup.</h1><p class="sub">Starter reference cards. Always verify job-specific requirements against the governing plans, code and approved project documents.</p></div></div><div class="grid three"><div class="card"><h3>Common Fittings</h3><div class="list"><div class="item"><b>90° Elbow</b><span class="pill">Direction change</span></div><div class="item"><b>Tee</b><span class="pill">Branch</span></div><div class="item"><b>Reducer</b><span class="pill">Size change</span></div><div class="item"><b>Coupling</b><span class="pill">Join</span></div></div></div><div class="card"><h3>Field Checklist</h3><div class="list"><div class="item"><b>Confirm latest drawings</b><span>☐</span></div><div class="item"><b>Verify dimensions</b><span>☐</span></div><div class="item"><b>Check materials</b><span>☐</span></div><div class="item"><b>Document changes</b><span>☐</span></div></div></div><div class="card"><h3>Trade Terms</h3><p class="sub"><b>Branch line</b> — piping supplying sprinklers.</p><p class="sub"><b>Main</b> — primary distribution piping.</p><p class="sub"><b>FDC</b> — fire department connection.</p><p class="sub"><b>Riser</b> — vertical piping assembly.</p></div></div></section>
+<section id="notes" class="view"><div class="head"><div><div class="kicker">JOB NOTES</div><h1>Keep the details.</h1><p class="sub">Save measurements, issues, materials and follow-ups by job.</p></div></div><div class="grid two"><div class="card"><h3>New Note</h3><div class="form"><label>Job name<input id="jobName" placeholder="e.g. Warehouse 12 — Riser Room"></label><label>Category<select id="jobCat"><option>Measurements</option><option>Materials</option><option>Issue</option><option>Follow-up</option><option>General</option></select></label><label>Notes<textarea id="jobText" placeholder="Record what you found, measured or changed..."></textarea></label><button class="primary" onclick="saveNote()">Save Job Note</button></div></div><div class="card"><h3>Saved Notes</h3><div id="notesList" class="list"></div></div></div></section>
+
+<section id="safety" class="view">
+<div class="head"><div><div class="kicker">SAFETY & INSPECTIONS</div><h1>Document the work.</h1><p class="sub">Fill out job safety analyses and pre-use equipment inspections from the field. Save forms on this device and email a copy when you're ready.</p></div></div>
+<div class="formtabs">
+<button class="formtab active" data-formtab="jsa">🦺 Job Safety Analysis</button>
+<button class="formtab" data-formtab="equipment">🚜 Equipment Inspection</button>
+<button class="formtab" data-formtab="saved">📋 Saved Forms</button>
+</div>
+
+<div id="form-jsa" class="formview active">
+<div class="card"><h3>Job Safety Analysis</h3>
+<p class="smallprint">Use this as a field documentation template. It does not replace your employer's approved JSA/JHA, site rules, permits, competent-person requirements, or applicable law/code.</p>
+<div class="row">
+<label>Company / Contractor<input id="jsaCompany" placeholder="Company name"></label>
+<label>Job / Project<input id="jsaJob" placeholder="Project or job name"></label>
+</div>
+<div class="row">
+<label>Date<input id="jsaDate" type="date"></label>
+<label>Supervisor / Lead<input id="jsaSupervisor" placeholder="Name"></label>
+</div>
+<label>Work location<input id="jsaLocation" placeholder="Area, floor, building, or address"></label>
+<label>Task / Scope<textarea id="jsaTask" placeholder="Describe the work being performed..."></textarea></label>
+<h3 style="margin-top:18px">Hazards & Controls</h3>
+<div class="checkgrid">
+<label class="check"><input type="checkbox" name="jsaHazard" value="Falls / elevated work"> Falls / elevated work</label>
+<label class="check"><input type="checkbox" name="jsaHazard" value="Struck-by / falling objects"> Struck-by / falling objects</label>
+<label class="check"><input type="checkbox" name="jsaHazard" value="Caught-between / pinch points"> Caught-between / pinch points</label>
+<label class="check"><input type="checkbox" name="jsaHazard" value="Electrical"> Electrical</label>
+<label class="check"><input type="checkbox" name="jsaHazard" value="Mobile equipment / traffic"> Mobile equipment / traffic</label>
+<label class="check"><input type="checkbox" name="jsaHazard" value="Lifting / material handling"> Lifting / material handling</label>
+<label class="check"><input type="checkbox" name="jsaHazard" value="Hot work / fire"> Hot work / fire</label>
+<label class="check"><input type="checkbox" name="jsaHazard" value="Chemicals / hazardous materials"> Chemicals / hazardous materials</label>
+<label class="check"><input type="checkbox" name="jsaHazard" value="Noise / dust"> Noise / dust</label>
+<label class="check"><input type="checkbox" name="jsaHazard" value="Other"> Other</label>
+</div>
+<label style="margin-top:12px">Controls / Mitigations<textarea id="jsaControls" placeholder="List the controls, procedures, barriers, PPE, permits, spotters, etc."></textarea></label>
+<div class="row">
+<label>PPE required<input id="jsaPPE" placeholder="Hard hat, eye protection, gloves, etc."></label>
+<label>Emergency / rescue plan<input id="jsaEmergency" placeholder="Site emergency procedure / contact"></label>
+</div>
+<label>Additional notes<textarea id="jsaNotes" placeholder="Crew briefing notes, changes, special conditions..."></textarea></label>
+<div class="form-actions">
+<button class="primary" onclick="saveSafetyForm('jsa')">Save JSA</button>
+<button class="secondary" onclick="emailSafetyForm('jsa')">✉️ Email JSA</button>
+<button class="secondary" onclick="printSafetyForm('jsa')">🖨️ Print / PDF</button>
+<button class="secondary" onclick="clearSafetyForm('jsa')">Clear</button>
+</div></div></div>
+
+<div id="form-equipment" class="formview">
+<div class="card"><h3>Equipment Pre-Use Inspection</h3>
+<p class="smallprint">Select the equipment category and complete the checks that apply. Follow the manufacturer's inspection requirements and your employer/site procedure. Remove unsafe equipment from service according to your authorized procedure.</p>
+<div class="row">
+<label>Equipment type<select id="eqType" onchange="renderEquipmentChecks(true)"><option>Scissor Lift</option><option>Boom Lift</option><option>Forklift</option><option>Other Powered Equipment</option></select></label>
+<label>Equipment / Unit ID<input id="eqId" placeholder="Asset or unit number"></label>
+</div>
+<div class="row">
+<label>Date<input id="eqDate" type="date"></label>
+<label>Inspector name<input id="eqInspector" placeholder="Name"></label>
+</div>
+<div class="row">
+<label>Hours / meter reading<input id="eqHours" placeholder="Optional"></label>
+<label>Location<input id="eqLocation" placeholder="Jobsite / area"></label>
+</div>
+<div id="equipmentChecks"></div>
+<label style="margin-top:12px">Defects / observations<textarea id="eqDefects" placeholder="Describe any damage, leaks, alarms, missing guards, tire issues, etc."></textarea></label>
+<label class="check"><input id="eqOut" type="checkbox"> Equipment has a condition requiring it to be removed from service under our procedure.</label>
+<label style="margin-top:12px">Corrective action / notification<textarea id="eqAction" placeholder="Who was notified? What action was taken?"></textarea></label>
+<div class="form-actions">
+<button class="primary" onclick="saveSafetyForm('equipment')">Save Inspection</button>
+<button class="secondary" onclick="emailSafetyForm('equipment')">✉️ Email Inspection</button>
+<button class="secondary" onclick="printSafetyForm('equipment')">🖨️ Print / PDF</button>
+<button class="secondary" onclick="clearSafetyForm('equipment')">Clear</button>
+</div></div></div>
+
+<div id="form-saved" class="formview">
+<div class="card"><h3>Saved Safety Forms</h3><div id="savedSafetyForms" class="savedforms"></div></div>
+</div>
+</section>
+
+<section id="codes" class="view"><div class="head"><div><div class="kicker">CODES &amp; STANDARDS</div><h1>Know the code.</h1><p class="sub">The NFPA codes and standards used most in sprinkler work. Each card opens its official page on NFPA.org.</p></div><div class="head-actions"><a class="secondary code-link" href="https://www.nfpa.org/for-professionals/codes-and-standards/list-of-codes-and-standards" target="_blank" rel="noopener noreferrer">Full NFPA list (300+) ↗</a></div></div>
+<div class="code-tools"><input id="codeSearch" type="search" placeholder="Search number or topic (25, pumps)" oninput="renderCodes()" autocomplete="off" aria-label="Search NFPA codes and standards"></div>
+<div id="codeChips" class="code-chips" role="group" aria-label="Filter by topic"></div>
+<p id="codeCount" class="sub" aria-live="polite"></p>
+<div id="codeList" class="code-grid"></div>
+<p class="code-note">NFPA documents are copyrighted, so only titles and short descriptions appear here. Your jurisdiction (AHJ) decides which edition applies. Confirm the adopted edition before relying on a requirement.</p></section>
+<section id="challenges" class="view"><div class="head"><div><div class="kicker">CHALLENGES</div><h1>Test yourself.</h1><p class="sub">Short field-style questions. Your score is saved on this device.</p></div></div><div class="card" id="challengeCard"></div></section>
+</main></div></div>
+<button class="ai-fab" onclick="openAI()">🤖 FitterField AI</button>
+<section id="aiPanel" class="ai-panel" aria-label="FitterField AI assistant">
+  <div class="ai-head"><div class="ai-title"><span class="ai-icon">🤖</span><div><b>FitterField AI</b><div style="font-size:10px;opacity:.7">Your field assistant</div></div></div><button class="ai-close" onclick="closeAI()">×</button></div>
+  <div id="aiMessages" class="ai-body"><div class="ai-msg bot">Hey! I'm FitterField AI. Ask me a field question, have me explain a calculation, or use the microphone when your hands are busy.</div></div>
+  <div id="aiStatus" class="ai-status"></div>
+  <div class="ai-compose"><div class="ai-row"><textarea id="aiInput" class="ai-input" rows="2" placeholder="Ask FitterField AI..."></textarea><button id="micBtn" class="mic-btn" type="button" onclick="toggleRecording()" title="Speak your question">🎙️</button><button class="send-btn" onclick="sendAI()">➤</button></div><div class="ai-hint">Tap 🎙️, talk, then tap again. Your speech is transcribed and sent to FitterField AI.</div><label class="ai-handsfree"><input id="speakReplies" type="checkbox" checked> Read AI replies out loud</label></div>
+</section>
+<button class="voice-fab" type="button" onclick="toggleVoice()" aria-label="Talk to FitterField" title="Talk to FitterField"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+<section id="voiceSheet" class="voice-sheet" data-state="idle" role="dialog" aria-label="Voice commands">
+  <div class="voice-head">
+    <button id="voiceOrb" class="voice-orb" type="button" onclick="toggleVoice()" aria-label="Start listening"></button>
+    <div class="voice-text" aria-live="polite"><div id="voiceState" class="voice-state">Tap the mic and talk</div><div id="voiceHeard" class="voice-heard"></div></div>
+    <button class="voice-x" type="button" onclick="closeVoice()" aria-label="Close voice commands">×</button>
+  </div>
+  <div id="voiceResult" class="voice-result"></div>
+  <div id="voiceChips" class="voice-chips"></div>
+  <label class="voice-opt"><input id="voiceSpeak" type="checkbox" checked> Speak confirmations out loud</label>
+</section>
+<div class="toast" id="toast"></div>
+<script>
+const KEY='fitterfield-pro-v1';
+const AI_URL='';
+const challenges=[{q:'A 90° elbow is primarily used to:',a:['Change direction','Change pipe material','Measure pressure','Record a job'],c:0},{q:'What should you check before working from a drawing?',a:['That it is the latest approved version','Only the title','The weather','Nothing'],c:0},{q:'3/8 as a decimal is:',a:['0.125','0.25','0.375','0.625'],c:2}];
+let state=JSON.parse(localStorage.getItem(KEY)||'null')||{notes:[],score:0,challenge:0,safetyForms:[]};
+let recorder=null,recordingChunks=[],isRecording=false;
+function persist(){localStorage.setItem(KEY,JSON.stringify(state));document.getElementById('saveStatus').textContent='Saved locally • '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});updateStats()}
+function showView(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.view===id));if(id==='notes')renderNotes();if(id==='challenges')renderChallenge();if(id==='codes')renderCodes();if(id==='safety'){renderEquipmentChecks();renderSavedSafetyForms();}window.scrollTo(0,0)}
+document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+function toast(t){let x=document.getElementById('toast');x.textContent=t;x.style.display='block';setTimeout(()=>x.style.display='none',2000)}
+function updateStats(){document.getElementById('jobCount').textContent=new Set(state.notes.map(n=>n.job)).size;document.getElementById('noteCount').textContent=state.notes.length;document.getElementById('formCount').textContent=(state.safetyForms||[]).length;document.getElementById('challengeScore').textContent=state.score}
+function convertLength(){let f=Number(document.getElementById('feet').value)||0,i=Number(document.getElementById('inches').value)||0;document.getElementById('totalInches').textContent=(f*12+i).toFixed(2)}
+function fractionToDecimal(){let v=document.getElementById('frac').value.trim().split('/');if(v.length!==2||!Number(v[1]))return document.getElementById('fracResult').textContent='Enter a fraction like 3/8.';document.getElementById('fracResult').textContent=(Number(v[0])/Number(v[1])).toFixed(4)}
+function decimalToFraction(){let n=Number(document.getElementById('dec').value);if(!Number.isFinite(n))return;let whole=Math.floor(n),best=[0,1],err=1;for(let d=1;d<=64;d++){let num=Math.round((n-whole)*d),e=Math.abs(n-(whole+num/d));if(e<err){err=e;best=[num,d]}}document.getElementById('decResult').textContent=whole+(best[0]?` ${best[0]}/${best[1]}`:'')}
+function pipeTotal(){let n=Number(document.getElementById('pieces').value)||0,l=Number(document.getElementById('pieceLen').value)||0;document.getElementById('pipeResult').textContent=(n*l).toFixed(2)+' in total'}
+function saveNote(){let job=document.getElementById('jobName').value.trim(),text=document.getElementById('jobText').value.trim(),cat=document.getElementById('jobCat').value;if(!job||!text)return toast('Add a job name and note first.');state.notes.unshift({id:Date.now(),job,text,cat,at:new Date().toLocaleString()});document.getElementById('jobName').value='';document.getElementById('jobText').value='';persist();renderNotes();toast('Job note saved.')}
+function renderNotes(){let el=document.getElementById('notesList');if(!state.notes.length)return el.innerHTML='<div class="empty">No notes yet. Your first job note will appear here.</div>';el.innerHTML=state.notes.map(n=>`<div class="item" style="display:block"><div style="display:flex;justify-content:space-between;gap:10px"><b>${esc(n.job)}</b><span class="pill">${esc(n.cat)}</span></div><p class="sub">${esc(n.text)}</p><small style="color:#8a9aaa">${esc(n.at)}</small></div>`).join('')}
+const NFPA_LIST_URL='https://www.nfpa.org/for-professionals/codes-and-standards/list-of-codes-and-standards';
+const NFPA_CODE_URL='https://www.nfpa.org/codes-and-standards/all-codes-and-standards/list-of-codes-and-standards/detail?code=';
+const CODE_GROUPS=[['all','All'],['sprinkler','Sprinklers & Standpipes'],['water','Water Supply & Pumps'],['fire','Fire Codes & Alarms'],['extinguish','Extinguishing Systems'],['site','Jobsite Safety']];
+const CODES=[
+['13','Standard for the Installation of Sprinkler Systems','sprinkler','Design, installation, and acceptance testing of automatic sprinkler systems.'],
+['13D','Standard for the Installation of Sprinkler Systems in One- and Two-Family Dwellings and Manufactured Homes','sprinkler','Sprinkler systems for one- and two-family homes and manufactured homes.'],
+['13R','Standard for the Installation of Sprinkler Systems in Low-Rise Residential Occupancies','sprinkler','Sprinkler systems for low-rise residential buildings.'],
+['13E','Recommended Practice for Fire Department Operations in Properties Protected by Sprinkler and Standpipe Systems','sprinkler','How fire departments operate in buildings with sprinkler and standpipe systems.'],
+['14','Standard for the Installation of Standpipe and Hose Systems','sprinkler','Installation of standpipe and hose systems.'],
+['15','Standard for Water Spray Fixed Systems for Fire Protection','sprinkler','Fixed water spray systems.'],
+['16','Standard for the Installation of Foam-Water Sprinkler and Foam-Water Spray Systems','sprinkler','Foam-water sprinkler and spray systems.'],
+['25','Standard for the Inspection, Testing, and Maintenance of Water-Based Fire Protection Systems','sprinkler','Inspection, testing, and maintenance after a system is in service.'],
+['750','Standard on Water Mist Fire Protection Systems','sprinkler','Water mist fire protection systems.'],
+['20','Standard for the Installation of Stationary Pumps for Fire Protection','water','Installation of stationary fire pumps.'],
+['22','Standard for Water Tanks for Private Fire Protection','water','Water tanks that supply private fire protection.'],
+['24','Standard for the Installation of Private Fire Service Mains and Their Appurtenances','water','Private fire service mains and their appurtenances.'],
+['291','Recommended Practice for Fire Flow Testing and Marking of Hydrants','water','Fire flow testing and hydrant marking.'],
+['72','National Fire Alarm and Signaling Code','fire','Fire alarm and signaling systems, including waterflow and valve supervision connections.'],
+['1','Fire Code','fire','General fire prevention and protection requirements.'],
+['101','Life Safety Code','fire','Egress and life safety protection features in buildings.'],
+['80','Standard for Fire Doors and Other Opening Protectives','fire','Fire doors and other opening protectives.'],
+['70','National Electrical Code','fire','Electrical installations, including fire pump and alarm wiring.'],
+['30','Flammable and Combustible Liquids Code','fire','Storage and handling of flammable and combustible liquids.'],
+['10','Standard for Portable Fire Extinguishers','extinguish','Selection, installation, and maintenance of portable extinguishers.'],
+['11','Standard for Low-, Medium-, and High-Expansion Foam','extinguish','Foam extinguishing systems.'],
+['12','Standard on Carbon Dioxide Extinguishing Systems','extinguish','Carbon dioxide extinguishing systems.'],
+['17','Standard for Dry Chemical Extinguishing Systems','extinguish','Dry chemical extinguishing systems.'],
+['2001','Standard on Clean Agent Fire Extinguishing Systems','extinguish','Clean agent extinguishing systems.'],
+['51B','Standard for Fire Prevention During Welding, Cutting, and Other Hot Work','site','Fire prevention for hot work such as welding and cutting.'],
+['241','Standard for Safeguarding Construction, Alteration, and Demolition Operations','site','Fire safety on construction, alteration, and demolition sites.'],
+['70E','Standard for Electrical Safety in the Workplace','site','Electrical safety for people working on or near electrical equipment.']
+];
+let codeGroup='all';
+function codeMatches(c,q){
+ if(codeGroup!=='all'&&c[2]!==codeGroup)return false;
+ if(!q)return true;
+ const num=c[0].toLowerCase(),text=(c[1]+' '+c[3]).toLowerCase();
+ return q.split(' ').every(t=>/^\d+[a-z]?$/.test(t)?num.startsWith(t):(num.startsWith(t)||text.includes(t)));
+}
+function codeQuery(){return (document.getElementById('codeSearch').value||'').toLowerCase().replace(/\bnfpa\b/g,' ').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
+function renderCodes(){
+ const q=codeQuery(),hits=CODES.filter(c=>codeMatches(c,q));
+ document.getElementById('codeChips').innerHTML=CODE_GROUPS.map(g=>`<button type="button" class="code-chip${codeGroup===g[0]?' active':''}" aria-pressed="${codeGroup===g[0]}" onclick="setCodeGroup('${g[0]}')">${esc(g[1])}</button>`).join('');
+ document.getElementById('codeCount').textContent=hits.length===CODES.length?CODES.length+' codes and standards':hits.length+' of '+CODES.length+' shown';
+ document.getElementById('codeList').innerHTML=hits.length?hits.map(c=>`<a class="code-card" href="${NFPA_CODE_URL}${encodeURIComponent(c[0])}" target="_blank" rel="noopener noreferrer" aria-label="NFPA ${esc(c[0])}, ${esc(c[1])}. Opens NFPA.org in a new tab."><span class="code-num">NFPA ${esc(c[0])}</span><b>${esc(c[1])}</b><small>${esc(c[3])}</small><span class="code-go">Open on NFPA.org ↗</span></a>`).join(''):`<div class="empty" style="grid-column:1/-1">No match in this short list. NFPA publishes 300+ codes and standards. <a href="${NFPA_LIST_URL}" target="_blank" rel="noopener noreferrer">Search the full list on NFPA.org ↗</a></div>`;
+}
+function setCodeGroup(g){codeGroup=g;renderCodes()}
+// Used by voice commands: set the search box, reset the topic filter, return how many codes match.
+function setCodeSearch(text){document.getElementById('codeSearch').value=text||'';codeGroup='all';renderCodes();return CODES.filter(c=>codeMatches(c,codeQuery())).length}
+function renderChallenge(){let i=state.challenge%challenges.length,c=challenges[i];document.getElementById('challengeCard').innerHTML=`<div class="kicker">QUESTION ${i+1} OF ${challenges.length}</div><h2>${c.q}</h2><div class="grid two">${c.a.map((a,j)=>`<button class="secondary" style="text-align:left" onclick="answerChallenge(${j},${c.c})">${String.fromCharCode(65+j)}. ${a}</button>`).join('')}</div><p class="sub">Current score: <b>${state.score}</b> points</p>`}
+function answerChallenge(a,c){if(a===c){state.score+=10;toast('Correct! +10 points.')}else toast('Not quite. Keep practicing.');state.challenge++;persist();setTimeout(renderChallenge,500)}
+function esc(s){return String(s).replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+
+
+const equipmentChecklist={
+'Scissor Lift':['Controls / emergency stop','Guardrails, gates and toe boards','Platform floor / access','Tires, wheels and steering','Hydraulic / electrical systems','Alarms, horn and warning devices','Lowering / emergency lowering system','Safety decals and capacity markings','Leaks, damage or loose/missing parts'],
+'Boom Lift':['Controls / emergency stop','Platform guardrails, gate and toe boards','Boom / jib / turntable condition','Tires, wheels and steering','Hydraulic / electrical systems','Alarms, horn and warning devices','Emergency lowering system','Tilt / load / interlock devices as applicable','Leaks, damage or loose/missing parts'],
+'Forklift':['Service / parking brake','Steering and tires / wheels','Forks, carriage and mast','Chains, hoses and hydraulic system','Load backrest / guards as applicable','Seat belt / operator restraint','Horn, alarms and warning lights','Capacity plate / markings','Leaks, damage or loose/missing parts'],
+'Other Powered Equipment':['Controls and emergency stop','Guards and protective devices','Brakes / steering / tires as applicable','Power / hydraulic / electrical systems','Alarms, lights and warning devices','Safety decals / capacity markings','Leaks, damage or loose/missing parts']
+};
+let renderedEqType='';
+function renderEquipmentChecks(force){
+ const type=document.getElementById('eqType')?.value; const el=document.getElementById('equipmentChecks'); if(!el||!type)return;
+ // Only rebuild when the equipment type changes (or on request) so ticked checks survive switching screens.
+ if(!force&&renderedEqType===type&&el.children.length)return;
+ renderedEqType=type;
+ el.innerHTML='<h3 style="margin-top:18px">Inspection checks</h3><div class="checkgrid">'+equipmentChecklist[type].map((x,i)=>`<label class="check"><input type="checkbox" class="eqcheck" value="${esc(x)}"> ${esc(x)}</label>`).join('')+'</div>';
+}
+function formData(type){
+ if(type==='jsa') return {
+  type:'Job Safety Analysis', company:v('jsaCompany'), job:v('jsaJob'), date:v('jsaDate'), supervisor:v('jsaSupervisor'), location:v('jsaLocation'), task:v('jsaTask'),
+  hazards:[...document.querySelectorAll('input[name="jsaHazard"]:checked')].map(x=>x.value), controls:v('jsaControls'), ppe:v('jsaPPE'), emergency:v('jsaEmergency'), notes:v('jsaNotes')
+ };
+ return {type:'Equipment Inspection', equipment:v('eqType'), unitId:v('eqId'), date:v('eqDate'), inspector:v('eqInspector'), hours:v('eqHours'), location:v('eqLocation'),
+  checks:[...document.querySelectorAll('.eqcheck')].map(x=>({item:x.value,ok:x.checked})), defects:v('eqDefects'), outOfService:document.getElementById('eqOut').checked, action:v('eqAction')};
+}
+function v(id){return document.getElementById(id)?.value?.trim()||''}
+function saveSafetyForm(type){
+ const data=formData(type); if(type==='jsa'&&!data.job&&!data.task)return toast('Add the job and task first.');
+ if(type==='equipment'&&!data.unitId)return toast('Add the equipment / unit ID first.');
+ data.id=Date.now();data.savedAt=new Date().toISOString();state.safetyForms=state.safetyForms||[];state.safetyForms.unshift(data);persist();renderSavedSafetyForms();toast(type==='jsa'?'JSA saved.':'Inspection saved.');
+}
+function renderSavedSafetyForms(){
+ const el=document.getElementById('savedSafetyForms'); if(!el)return;
+ const forms=state.safetyForms||[]; if(!forms.length){el.innerHTML='<div class="empty">No safety forms saved yet.</div>';return}
+ el.innerHTML=forms.slice(0,30).map(f=>`<div class="savedform"><strong>${esc(f.type)} — ${esc(f.job||f.equipment||'Untitled')}</strong><span class="sub">${esc(f.date||'No date')} • saved ${esc(new Date(f.savedAt).toLocaleString())}</span><div class="form-actions"><button class="secondary" onclick="emailSavedSafety(${f.id})">✉️ Email</button><button class="secondary" onclick="printSavedSafety(${f.id})">🖨️ Print</button><button class="secondary" onclick="deleteSafety(${f.id})">Delete</button></div></div>`).join('');
+}
+function getSavedSafety(id){return (state.safetyForms||[]).find(x=>x.id===id)}
+function emailSavedSafety(id){const f=getSavedSafety(id);if(f)emailSafetyData(f)}
+function printSavedSafety(id){const f=getSavedSafety(id);if(f)printSafetyData(f)}
+function deleteSafety(id){state.safetyForms=(state.safetyForms||[]).filter(x=>x.id!==id);persist();renderSavedSafetyForms();toast('Form deleted.')}
+function safetyText(f){
+ let s=`${f.type}\n\n`;
+ if(f.type==='Job Safety Analysis'){
+  s+=`Company / Contractor: ${f.company}\nJob / Project: ${f.job}\nDate: ${f.date}\nSupervisor / Lead: ${f.supervisor}\nLocation: ${f.location}\n\nTask / Scope:\n${f.task}\n\nHazards identified:\n${(f.hazards||[]).join(', ')||'None selected'}\n\nControls / Mitigations:\n${f.controls}\n\nPPE:\n${f.ppe}\n\nEmergency / rescue plan:\n${f.emergency}\n\nAdditional notes:\n${f.notes}`;
+ }else{
+  s+=`Equipment: ${f.equipment}\nUnit ID: ${f.unitId}\nDate: ${f.date}\nInspector: ${f.inspector}\nHours / meter: ${f.hours}\nLocation: ${f.location}\n\nInspection checks marked complete:\n${(f.checks||[]).map(x=>`${x.ok?'[X]':'[ ]'} ${x.item}`).join('\n')}\n\nDefects / observations:\n${f.defects}\n\nOut of service condition reported: ${f.outOfService?'YES':'NO'}\n\nCorrective action / notification:\n${f.action}`;
+ }
+ return s;
+}
+function printSafetyForm(type){printSafetyData(formData(type))}
+function printSafetyData(f){
+ const w=window.open('','_blank'); if(!w)return toast('Allow pop-ups to print the form.');
+ w.document.write(`<html><head><title>${esc(f.type)}</title><style>body{font:14px Arial;padding:35px;line-height:1.5}h1{font-size:22px}pre{white-space:pre-wrap;font:14px Arial}</style></head><body><h1>${esc(f.type)}</h1><pre>${esc(safetyText(f))}</pre><script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+}
+async function emailSafetyForm(type){const f=formData(type);if(type==='jsa'&&!f.job&&!f.task)return toast('Add the job and task first.');if(type==='equipment'&&!f.unitId)return toast('Add the equipment / unit ID first.');await emailSafetyData(f)}
+async function emailSafetyData(f){
+ const to=window.prompt('Send to email address:',''); if(!to)return;
+ try{const r=await fetch(AI_URL+'/api/email-form',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,form:f})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'Email failed');toast('Email sent.')}catch(e){
+  const subject=encodeURIComponent(`FitterField ${f.type} — ${f.job||f.equipment||f.unitId||'Field Form'}`);
+  const body=encodeURIComponent(safetyText(f));
+  window.location.href=`mailto:${encodeURIComponent(to)}?subject=${subject}&body=${body}`;
+  toast('Opening your email app…');
+ }}
+function showFormTab(tab){document.querySelectorAll('.formtab').forEach(x=>x.classList.toggle('active',x.dataset.formtab===tab));document.querySelectorAll('.formview').forEach(x=>x.classList.remove('active'));document.getElementById('form-'+tab).classList.add('active');if(tab==='equipment')renderEquipmentChecks();if(tab==='saved')renderSavedSafetyForms()}
+document.querySelectorAll('.formtab').forEach(b=>b.addEventListener('click',()=>showFormTab(b.dataset.formtab)));
+function clearSafetyForm(type){if(!confirm('Clear this form?'))return;const ids=type==='jsa'?['jsaCompany','jsaJob','jsaDate','jsaSupervisor','jsaLocation','jsaTask','jsaControls','jsaPPE','jsaEmergency','jsaNotes']:['eqId','eqDate','eqInspector','eqHours','eqLocation','eqDefects','eqAction'];ids.forEach(id=>{const x=document.getElementById(id);if(x)x.value=''});document.querySelectorAll('input[name="jsaHazard"],.eqcheck,#eqOut').forEach(x=>x.checked=false);if(type==='equipment')renderEquipmentChecks(true)}
+
+function openAI(){document.getElementById('aiPanel').classList.add('open');setTimeout(()=>document.getElementById('aiInput').focus(),50)}
+function closeAI(){document.getElementById('aiPanel').classList.remove('open')}
+function addAIMessage(text,who){const box=document.getElementById('aiMessages');const div=document.createElement('div');div.className='ai-msg '+who;div.textContent=text;box.appendChild(div);box.scrollTop=box.scrollHeight;return div}
+function setAIStatus(text,show=true){const el=document.getElementById('aiStatus');el.textContent=text;el.style.display=show?'block':'none'}
+async function sendAI(){const input=document.getElementById('aiInput');const message=input.value.trim();if(!message)return;addAIMessage(message,'user');input.value='';setAIStatus('FitterField AI is thinking…');try{const r=await fetch(AI_URL+'/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'AI request failed');addAIMessage(data.answer||'No answer returned.','bot');setAIStatus('',false);if(document.getElementById('speakReplies').checked&&'speechSynthesis' in window){window.speechSynthesis.cancel();window.speechSynthesis.speak(new SpeechSynthesisUtterance(data.answer||''))}}catch(e){setAIStatus('',false);addAIMessage('I could not reach FitterField AI right now. The service may still be waiting for its OpenAI key or deployment.','bot')}}
+document.getElementById('aiInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI()}});
+async function toggleRecording(){if(isRecording){stopRecording();return}if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){toast('Voice recording is not supported by this browser.');return}try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});recordingChunks=[];recorder=new MediaRecorder(stream);isRecording=true;document.getElementById('micBtn').classList.add('recording');document.getElementById('micBtn').textContent='⏹️';setAIStatus('Listening… tap the microphone again when finished.');recorder.ondataavailable=e=>{if(e.data.size)recordingChunks.push(e.data)};recorder.onstop=async()=>{stream.getTracks().forEach(t=>t.stop());const blob=new Blob(recordingChunks,{type:recorder.mimeType||'audio/webm'});await transcribeVoice(blob)};recorder.start()}catch(e){toast('Microphone permission was not granted.')}}
+function stopRecording(){if(recorder&&isRecording){isRecording=false;document.getElementById('micBtn').classList.remove('recording');document.getElementById('micBtn').textContent='🎙️';setAIStatus('Transcribing your voice…');recorder.stop()}}
+async function transcribeVoice(blob){try{const fd=new FormData();fd.append('audio',blob,'fitterfield-voice.webm');const r=await fetch(AI_URL+'/api/transcribe',{method:'POST',body:fd});const data=await r.json().catch(()=>({}));if(!r.ok)throw new Error(data.error||'Transcription failed');const text=String(data.text||'').trim();if(!text){setAIStatus('',false);toast('I did not catch that. Try again.');return}document.getElementById('aiInput').value=text;setAIStatus('',false);await sendAI()}catch(e){setAIStatus('',false);addAIMessage('I could not transcribe that recording. Please try again.','bot')}}
+updateStats();renderNotes();renderEquipmentChecks();renderSavedSafetyForms();document.getElementById('jsaDate').valueAsDate=new Date();document.getElementById('eqDate').valueAsDate=new Date();
+</script>
+<script>
+/* ================= FitterField voice commands =================
+ * Tap the mic, say what you want, and the app moves there / fills it in.
+ *
+ *   listen  -> browser speech recognition (live text) or, if that isn't
+ *              available, record audio and transcribe it on the server
+ *   decide  -> short exact phrases ("open job notes") are matched instantly;
+ *              everything else goes to /api/voice-command (AI)
+ *   act     -> a whitelisted list of actions is run against the page
+ *
+ * Voice never ticks inspection checks, emails, prints, clears or deletes.
+ */
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+
+  const VIEWS = { dashboard: 'Dashboard', tools: 'Field Tools', reference: 'Reference', notes: 'Job Notes', safety: 'Safety Forms', codes: 'NFPA Codes', challenges: 'Challenges' };
+  const TABS = { jsa: 'Job Safety Analysis', equipment: 'Equipment Inspection', saved: 'Saved Forms' };
+  const EQUIP = ['Scissor Lift', 'Boom Lift', 'Forklift', 'Other Powered Equipment'];
+  const CATS = ['Measurements', 'Materials', 'Issue', 'Follow-up', 'General'];
+  const FORMS = {
+    jsa: { name: 'JSA', ids: { company: 'jsaCompany', job: 'jsaJob', date: 'jsaDate', supervisor: 'jsaSupervisor', location: 'jsaLocation', task: 'jsaTask', controls: 'jsaControls', ppe: 'jsaPPE', emergency: 'jsaEmergency', notes: 'jsaNotes' }, long: ['task', 'controls', 'notes'] },
+    equipment: { name: 'Inspection', ids: { unitId: 'eqId', date: 'eqDate', inspector: 'eqInspector', hours: 'eqHours', location: 'eqLocation', defects: 'eqDefects', action: 'eqAction' }, long: ['defects', 'action'] },
+    note: { name: 'Job note', ids: { jobName: 'jobName', text: 'jobText' }, long: ['text'] }
+  };
+  const LABELS = { company: 'company', job: 'job', date: 'date', supervisor: 'supervisor', location: 'location', task: 'task', controls: 'controls', ppe: 'PPE', emergency: 'emergency plan', notes: 'notes', unitId: 'unit ID', inspector: 'inspector', hours: 'hours', defects: 'defects', action: 'action taken', jobName: 'job', text: 'note' };
+  const EXAMPLES = ['Open safety forms', 'Start a JSA', 'Scissor lift inspection', 'Add a job note', 'Convert 12 feet 6 inches', 'Look up NFPA 25', 'What is an FDC?'];
+
+  const ICON_MIC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
+  const ICON_STOP = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
+  const ICON_WAIT = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const V = { state: 'idle', token: 0, sr: null, mr: null, stream: null, audioCtx: null, raf: 0, closeTimer: 0, srBroken: false };
+
+  /* ---------- small helpers ---------- */
+  function num(x) {
+    if (x === null || x === undefined || x === '' || typeof x === 'boolean') return null;
+    const n = Number(x);
+    return Number.isFinite(n) && Math.abs(n) < 1e7 ? n : null;
+  }
+  function short(t, n) { t = String(t); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
+  function speakOn() { return !!$('voiceSpeak').checked; }
+  function speak(text) {
+    if (!text || !speakOn() || !('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+  }
+  function context() {
+    const view = document.querySelector('.view.active')?.id || 'dashboard';
+    const d = new Date();
+    const today = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    return { view, formTab: view === 'safety' ? (document.querySelector('.formtab.active')?.dataset.formtab || 'jsa') : null, today, equipmentType: $('eqType')?.value || null };
+  }
+
+  /* ---------- sheet UI ---------- */
+  function ui(state, title, heard) {
+    V.state = state;
+    $('voiceSheet').dataset.state = state;
+    if (title != null) $('voiceState').textContent = title;
+    if (heard != null) $('voiceHeard').textContent = heard;
+    const orb = $('voiceOrb');
+    orb.innerHTML = state === 'listening' ? ICON_STOP : state === 'thinking' ? ICON_WAIT : ICON_MIC;
+    orb.setAttribute('aria-label', state === 'listening' ? 'Stop listening' : state === 'thinking' ? 'Working' : 'Start listening');
+  }
+  function showSteps(steps) {
+    const box = $('voiceResult');
+    box.innerHTML = '';
+    steps.forEach(s => {
+      const div = document.createElement('div');
+      div.className = 'voice-step' + (s.bad ? ' bad' : '') + (s.note ? ' note' : '');
+      div.textContent = (s.bad ? '⚠ ' : s.note ? 'ℹ ' : '✓ ') + s.text;
+      box.appendChild(div);
+    });
+  }
+  function openSheet() {
+    clearTimeout(V.closeTimer);
+    $('voiceSheet').classList.add('open');
+    document.body.classList.add('voice-open');
+  }
+
+  window.closeVoice = function () {
+    cancelCapture();
+    clearTimeout(V.closeTimer);
+    $('voiceSheet').classList.remove('open');
+    document.body.classList.remove('voice-open');
+    ui('idle');
+  };
+  window.toggleVoice = function () {
+    if (V.state === 'listening') return stopListening();
+    if (V.state === 'thinking') return;
+    startVoice();
+  };
+
+  /* ---------- capture ---------- */
+  function releaseStream() {
+    cancelAnimationFrame(V.raf);
+    if (V.stream) { V.stream.getTracks().forEach(t => t.stop()); V.stream = null; }
+    if (V.audioCtx) { try { V.audioCtx.close(); } catch (e) { /* ignore */ } V.audioCtx = null; }
+  }
+  function cancelCapture() {
+    V.token++;
+    if (V.sr) { try { V.sr.abort(); } catch (e) { /* ignore */ } V.sr = null; }
+    if (V.mr && V.mr.state === 'recording') { try { V.mr.stop(); } catch (e) { /* ignore */ } }
+    V.mr = null;
+    releaseStream();
+  }
+  function stopListening() {
+    if (V.sr) {
+      ui('thinking', 'Working on it…');
+      try { V.sr.stop(); } catch (e) { /* ignore */ }
+    } else if (V.mr && V.mr.state === 'recording') {
+      V.mr.stop();
+    }
+  }
+
+  function startVoice() {
+    if ('speechSynthesis' in window) speechSynthesis.cancel(); // don't let the app hear itself
+    cancelCapture();
+    const token = V.token;
+    openSheet();
+    showSteps([]);
+    ui('listening', 'Starting…', '');
+    if (SR && !V.srBroken) startRecognition(token); else startRecorder(token);
+  }
+
+  function startRecognition(token) {
+    let finalText = '';
+    let failed = false;
+    const r = new SR();
+    V.sr = r;
+    r.lang = navigator.language || 'en-US';
+    r.interimResults = true;
+    r.continuous = false;
+    r.maxAlternatives = 1;
+    r.onstart = () => { if (token === V.token) ui('listening', 'Listening…', 'Try “open safety forms”'); };
+    r.onresult = e => {
+      if (token !== V.token) return;
+      let interim = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const res = e.results[i];
+        if (res.isFinal) finalText += res[0].transcript + ' '; else interim += res[0].transcript;
+      }
+      const heard = (finalText + interim).trim();
+      if (heard) $('voiceHeard').textContent = '“' + heard + '”';
+    };
+    r.onerror = e => {
+      if (token !== V.token) return;
+      failed = true;
+      if (e.error === 'aborted') return;
+      if (e.error === 'no-speech') return ui('error', 'Didn’t hear anything', 'Tap the mic and try again.');
+      if (e.error === 'not-allowed') return ui('error', 'Microphone blocked', 'Allow microphone access for this site in your browser settings.');
+      // service-not-allowed / network / audio-capture / language-not-supported: use server transcription instead
+      V.srBroken = true;
+      V.sr = null;
+      startRecorder(token);
+    };
+    r.onend = () => {
+      if (token !== V.token || failed) return;
+      V.sr = null;
+      const text = finalText.trim();
+      if (!text) return ui('error', 'Didn’t catch that', 'Tap the mic and try again.');
+      handleUtterance(text, token);
+    };
+    try { r.start(); } catch (err) { V.srBroken = true; V.sr = null; startRecorder(token); }
+  }
+
+  async function startRecorder(token) {
+    if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+      return ui('error', 'Voice isn’t supported here', 'This browser can’t record audio. Tap an example below, or try Chrome or Safari.');
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      if (token !== V.token) { stream.getTracks().forEach(t => t.stop()); return; }
+      V.stream = stream;
+      const chunks = [];
+      const mime = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'].find(m => window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m));
+      const mr = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+      const det = { heard: false };
+      V.mr = mr;
+      mr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+      mr.onstop = async () => {
+        releaseStream();
+        if (token !== V.token) return;
+        V.mr = null;
+        const blob = new Blob(chunks, { type: mr.mimeType || mime || 'audio/webm' });
+        if (blob.size < 1500 || !det.heard) return ui('error', 'Didn’t hear anything', 'Tap the mic and try again.');
+        ui('thinking', 'Transcribing…');
+        try {
+          const text = await transcribe(blob);
+          if (token !== V.token) return;
+          if (!text) return ui('error', 'Didn’t catch that', 'Tap the mic and try again.');
+          handleUtterance(text, token);
+        } catch (e) {
+          if (token === V.token) ui('error', 'Couldn’t transcribe that', 'Check your connection and try again.');
+        }
+      };
+      mr.start();
+      ui('listening', 'Listening…', 'Talk, then pause. I’ll stop on my own.');
+      watchSilence(stream, token, det, () => { if (mr.state === 'recording') mr.stop(); });
+    } catch (err) {
+      ui('error', 'Microphone unavailable', err && err.name === 'NotFoundError' ? 'No microphone was found.' : 'Allow microphone access for this site in your browser settings.');
+    }
+  }
+
+  // Stops recording ~1.4s after you stop talking (handy with gloves on), 7s if nothing is said, 25s max.
+  function watchSilence(stream, token, det, done) {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AC();
+      V.audioCtx = ctx;
+      if (ctx.state === 'suspended') ctx.resume();
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 1024;
+      ctx.createMediaStreamSource(stream).connect(analyser);
+      const buf = new Uint8Array(analyser.fftSize);
+      const t0 = performance.now();
+      let lastVoice = t0;
+      const tick = () => {
+        if (token !== V.token || V.state !== 'listening') return;
+        analyser.getByteTimeDomainData(buf);
+        let sum = 0;
+        for (let i = 0; i < buf.length; i++) { const d = (buf[i] - 128) / 128; sum += d * d; }
+        const now = performance.now();
+        if (Math.sqrt(sum / buf.length) > 0.03) { det.heard = true; lastVoice = now; }
+        if ((det.heard && now - lastVoice > 1400) || (!det.heard && now - t0 > 7000) || now - t0 > 25000) return done();
+        V.raf = requestAnimationFrame(tick);
+      };
+      V.raf = requestAnimationFrame(tick);
+    } catch (e) {
+      det.heard = true; // no level meter: the user taps to stop, with a 25s safety stop
+      setTimeout(() => { if (token === V.token) done(); }, 25000);
+    }
+  }
+
+  async function transcribe(blob) {
+    const fd = new FormData();
+    fd.append('audio', blob, 'voice.' + (blob.type.includes('mp4') ? 'mp4' : 'webm'));
+    fd.append('context', 'command');
+    const r = await fetch(AI_URL + '/api/transcribe', { method: 'POST', body: fd });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(d.error || 'Transcription failed');
+    return String(d.text || '').trim();
+  }
+
+  /* ---------- understanding ---------- */
+  const FILLER = /\b(look up|lookup|find|search for|search|please|hey|ok|okay|fitterfield|can you|could you|would you|let's|lets|open|go to|go|take me to|take me|bring up|show me|show|pull up|switch to|navigate to|start|begin|create|make|add|new|the|a|an|my|screen|page|section|tab|area|form|up)\b/g;
+  const ALIASES = {
+    'dashboard': ['navigate', 'dashboard'], 'home': ['navigate', 'dashboard'], 'home screen': ['navigate', 'dashboard'], 'command center': ['navigate', 'dashboard'],
+    'field tools': ['navigate', 'tools'], 'tools': ['navigate', 'tools'], 'calculator': ['navigate', 'tools'], 'calculators': ['navigate', 'tools'], 'field math': ['navigate', 'tools'], 'converter': ['navigate', 'tools'],
+    'reference': ['navigate', 'reference'], 'fittings': ['navigate', 'reference'], 'trade terms': ['navigate', 'reference'], 'checklist': ['navigate', 'reference'], 'field checklist': ['navigate', 'reference'],
+    'job notes': ['navigate', 'notes'], 'job note': ['navigate', 'notes'], 'notes': ['navigate', 'notes'], 'note': ['navigate', 'notes'], 'notebook': ['navigate', 'notes'], 'field notes': ['navigate', 'notes'],
+    'safety': ['navigate', 'safety'], 'safety forms': ['navigate', 'safety'], 'forms': ['navigate', 'safety'], 'safety and inspections': ['navigate', 'safety'],
+    'jsa': ['tab', 'jsa'], 'jha': ['tab', 'jsa'], 'job safety analysis': ['tab', 'jsa'], 'job hazard analysis': ['tab', 'jsa'],
+    'inspection': ['tab', 'equipment'], 'inspections': ['tab', 'equipment'], 'equipment': ['tab', 'equipment'], 'equipment inspection': ['tab', 'equipment'], 'pre use inspection': ['tab', 'equipment'], 'pre-use inspection': ['tab', 'equipment'],
+    'saved': ['tab', 'saved'], 'saved forms': ['tab', 'saved'], 'saved safety forms': ['tab', 'saved'], 'saved inspections': ['tab', 'saved'],
+    'nfpa': ['navigate', 'codes'], 'nfpa codes': ['navigate', 'codes'], 'nfpa standards': ['navigate', 'codes'], 'codes': ['navigate', 'codes'], 'standards': ['navigate', 'codes'], 'codes and standards': ['navigate', 'codes'], 'code book': ['navigate', 'codes'],
+    'challenges': ['navigate', 'challenges'], 'challenge': ['navigate', 'challenges'], 'quiz': ['navigate', 'challenges']
+  };
+  const EQUIP_WORDS = [[/scissor/, 'Scissor Lift'], [/boom/, 'Boom Lift'], [/fork\s?lift/, 'Forklift']];
+  const NAV_LOOSE = [
+    ['dashboard', /\b(dashboard|home screen|command center)\b/], ['tools', /\b(field tools?|calculators?|converter)\b/], ['reference', /\b(reference|fittings|trade terms)\b/],
+    ['notes', /\b(job notes?|notebook)\b/], ['codes', /\b(nfpa|codes? and standards|standards)\b/], ['challenges', /\b(challenges?|quiz)\b/]
+  ];
+
+  function norm(t) { return String(t).toLowerCase().replace(/[’]/g, "'").replace(/[^a-z0-9\/.' -]/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+  // strict=true: only short exact phrases (instant, no network). strict=false: best-effort fallback when AI is unreachable.
+  function localParse(text, strict) {
+    const n = norm(text);
+    if (/^(stop|cancel|close|never ?mind|stop listening|that's all|thats all)$/.test(n)) return { say: '', actions: [{ type: 'close' }] };
+    if (/^(help|what can i say|what can you do|commands|examples)$/.test(n)) return { say: '', actions: [{ type: 'help' }] };
+
+    const core = n.replace(FILLER, ' ').replace(/\s+/g, ' ').trim();
+    const eq = EQUIP_WORDS.find(([re]) => re.test(n));
+    if (strict) {
+      if (eq && /^(scissor lift|boom lift|fork ?lift)( inspection)?$/.test(core)) {
+        return { say: 'Opening the ' + eq[1] + ' inspection.', actions: [{ type: 'fill', form: 'equipment', fields: { equipment: eq[1] } }] };
+      }
+      const nf = core.match(/^nfpa (\d{1,4}[a-z]?)$/);
+      if (nf) return { say: 'Looking up NFPA ' + nf[1].toUpperCase() + '.', actions: [{ type: 'search_codes', query: nf[1] }] };
+      const hit = ALIASES[core];
+      if (!hit) return null;
+      const label = hit[0] === 'tab' ? TABS[hit[1]] : VIEWS[hit[1]];
+      return { say: 'Opening ' + label + '.', actions: [hit[0] === 'tab' ? { type: 'safety_tab', tab: hit[1] } : { type: 'navigate', view: hit[1] }] };
+    }
+
+    const actions = [];
+    let m;
+    if ((m = n.match(/(\d+(?:\.\d+)?)\s*(?:feet|foot|ft)\b(?:\s*(?:and)?\s*(\d+(?:\.\d+)?)\s*(?:inches|inch|in)\b)?/))) {
+      actions.push({ type: 'calc', tool: 'length', feet: Number(m[1]), inches: m[2] ? Number(m[2]) : 0 });
+    } else if ((m = n.match(/(\d+)\s*(?:\/|over)\s*(\d+)/)) && Number(m[2]) !== 0) {
+      actions.push({ type: 'calc', tool: 'fraction', fraction: m[1] + '/' + m[2] });
+    } else if ((m = n.match(/(\d+(?:\.\d+)?)\s*(?:pieces|pcs|lengths|sticks)\D+?(\d+(?:\.\d+)?)/))) {
+      actions.push({ type: 'calc', tool: 'pipe', pieces: Number(m[1]), length: Number(m[2]) });
+    } else if ((m = n.match(/(\d*\.\d+)/)) && /(inch|fraction|decimal)/.test(n)) {
+      actions.push({ type: 'calc', tool: 'decimal', decimal: Number(m[1]) });
+    }
+    if (actions.length) return { say: 'Running that.', actions };
+
+    if (eq && /(inspect|lift|forklift)/.test(n)) return { say: 'Opening the ' + eq[1] + ' inspection.', actions: [{ type: 'fill', form: 'equipment', fields: { equipment: eq[1] } }] };
+    if (/\b(jsa|jha|job safety|job hazard)\b/.test(n)) return { say: 'Opening the JSA.', actions: [{ type: 'safety_tab', tab: 'jsa' }] };
+    if (/\b(saved (safety )?forms?|saved inspections?)\b/.test(n)) return { say: 'Opening saved forms.', actions: [{ type: 'safety_tab', tab: 'saved' }] };
+    if (/\b(inspection|inspections|equipment)\b/.test(n)) return { say: 'Opening equipment inspection.', actions: [{ type: 'safety_tab', tab: 'equipment' }] };
+    if (/\b(safety|forms?)\b/.test(n)) return { say: 'Opening Safety Forms.', actions: [{ type: 'navigate', view: 'safety' }] };
+    if ((m = n.match(/\bnfpa\s*(\d{1,4}[a-z]?)\b/)) && !/^(what|what's|how|why|when|where|which|who|explain|tell me|define|is|are|does|do|can)\b/.test(n)) return { say: 'Looking up NFPA ' + m[1].toUpperCase() + '.', actions: [{ type: 'search_codes', query: m[1] }] };
+    const nav = NAV_LOOSE.find(([, re]) => re.test(n));
+    if (nav) return { say: 'Opening ' + VIEWS[nav[0]] + '.', actions: [{ type: 'navigate', view: nav[0] }] };
+    if (/^(what|what's|how|why|when|where|which|who|explain|tell me|define|is|are|does|do|can)\b/.test(n)) return { say: '', actions: [{ type: 'ask', question: String(text).trim().slice(0, 400) }] };
+    return null;
+  }
+
+  function cleanPlan(d) {
+    const plan = { say: typeof d?.say === 'string' ? d.say.slice(0, 200) : '', actions: [] };
+    if (Array.isArray(d?.actions)) plan.actions = d.actions.filter(a => a && typeof a === 'object' && typeof a.type === 'string').slice(0, 8);
+    return plan;
+  }
+
+  async function interpret(text) {
+    const fast = localParse(text, true);
+    if (fast) return fast;
+    try {
+      const ctl = new AbortController();
+      const timer = setTimeout(() => ctl.abort(), 15000);
+      const r = await fetch(AI_URL + '/api/voice-command', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ctl.signal, body: JSON.stringify({ transcript: text, context: context() }) });
+      clearTimeout(timer);
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'Voice AI unavailable');
+      return cleanPlan(d);
+    } catch (e) {
+      const loose = localParse(text, false);
+      if (loose) { loose.offline = true; return loose; }
+      return { say: '', actions: [], error: 'I couldn’t reach voice AI, and that wasn’t a simple command. Try “open job notes” or tap an example.' };
+    }
+  }
+
+  /* ---------- acting ---------- */
+  function flash(el) {
+    el.classList.add('voice-filled');
+    setTimeout(() => el.classList.remove('voice-filled'), 2200);
+  }
+  function bringIntoView(el) {
+    const calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const y = el.getBoundingClientRect().top + window.scrollY - 110; // sit just under the sticky header, above the sheet
+    window.scrollTo({ top: Math.max(0, y), behavior: calm ? 'auto' : 'smooth' });
+  }
+
+  function doFill(a) {
+    const cfg = FORMS[a.form];
+    const f = a.fields && typeof a.fields === 'object' ? a.fields : {};
+    if (!cfg) return [];
+    if (a.form === 'note') showView('notes'); else { showView('safety'); showFormTab(a.form); }
+
+    const done = [];
+    let first = null;
+    const touch = (el, label, value) => { flash(el); if (!first) first = el; done.push(value ? label + ' “' + short(value, 36) + '”' : label); };
+
+    if (a.form === 'equipment' && EQUIP.includes(f.equipment)) {
+      $('eqType').value = f.equipment;
+      renderEquipmentChecks(true);
+      touch($('eqType'), 'equipment', f.equipment);
+    }
+    if (a.form === 'note' && CATS.includes(f.category)) { $('jobCat').value = f.category; touch($('jobCat'), 'category', f.category); }
+
+    for (const [key, id] of Object.entries(cfg.ids)) {
+      const raw = f[key];
+      if (raw === null || raw === undefined || raw === '') continue;
+      const el = $(id);
+      if (!el) continue;
+      const val = String(raw).trim();
+      if (!val) continue;
+      if (key === 'date') {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(val)) continue;
+        el.value = val;
+      } else if (cfg.long.includes(key)) {
+        el.value = el.value.trim() ? el.value.trim() + '\n' + val : val; // dictation adds to what's there
+      } else {
+        el.value = val;
+      }
+      touch(el, LABELS[key] || key, val);
+    }
+
+    if (a.form === 'jsa' && Array.isArray(f.hazards)) {
+      const ticked = [];
+      document.querySelectorAll('input[name="jsaHazard"]').forEach(cb => {
+        if (f.hazards.includes(cb.value)) { cb.checked = true; ticked.push(cb.value); }
+      });
+      if (ticked.length) { touch(document.querySelector('input[name="jsaHazard"]').closest('.checkgrid'), 'hazards', ticked.join(', ')); }
+    }
+    if (a.form === 'equipment' && f.outOfService === true) { $('eqOut').checked = true; touch($('eqOut').closest('label'), 'out-of-service flag'); }
+
+    if (first) bringIntoView(first);
+    const steps = [];
+    if (done.length) steps.push({ text: cfg.name + ': ' + done.join(', ') });
+    if (a.form === 'equipment') steps.push({ text: 'Tap each inspection check yourself. Voice can’t mark them for you.', note: true });
+    return steps;
+  }
+
+  function doCalc(a) {
+    const out = (text) => [{ text, calc: true }];
+    if (a.tool === 'length') {
+      const feet = num(a.feet), inches = num(a.inches);
+      if (feet === null && inches === null) return [];
+      showView('tools'); $('feet').value = feet ?? 0; $('inches').value = inches ?? 0; convertLength();
+      return out((feet ?? 0) + ' ft ' + (inches ?? 0) + ' in = ' + $('totalInches').textContent + ' in');
+    }
+    if (a.tool === 'fraction') {
+      if (!/^\d{1,4}\/\d{1,4}$/.test(String(a.fraction || ''))) return [];
+      showView('tools'); $('frac').value = a.fraction; fractionToDecimal();
+      return out(a.fraction + ' = ' + $('fracResult').textContent);
+    }
+    if (a.tool === 'decimal') {
+      const d = num(a.decimal);
+      if (d === null) return [];
+      showView('tools'); $('dec').value = d; decimalToFraction();
+      return out(d + ' = ' + $('decResult').textContent + ' in');
+    }
+    if (a.tool === 'pipe') {
+      const p = num(a.pieces), l = num(a.length);
+      if (p === null || l === null) return [];
+      showView('tools'); $('pieces').value = p; $('pieceLen').value = l; pipeTotal();
+      return out(p + ' × ' + l + ' in = ' + $('pipeResult').textContent);
+    }
+    return [];
+  }
+
+  function doSave(what) {
+    if (what === 'note') {
+      const before = state.notes.length;
+      showView('notes'); saveNote();
+      return state.notes.length > before ? [{ text: 'Saved the job note' }] : [{ text: 'Add a job name and a note first', bad: true }];
+    }
+    if (what === 'jsa' || what === 'equipment') {
+      const before = (state.safetyForms || []).length;
+      showView('safety'); showFormTab(what); saveSafetyForm(what);
+      const saved = (state.safetyForms || []).length > before;
+      if (saved) return [{ text: what === 'jsa' ? 'Saved the JSA' : 'Saved the inspection' }];
+      return [{ text: what === 'jsa' ? 'Add the job and task first' : 'Add the equipment / unit ID first', bad: true }];
+    }
+    return [];
+  }
+
+  // Returns { steps, ask, help, close, nav }
+  async function runActions(actions) {
+    const res = { steps: [], ask: null, help: false, close: false };
+    for (const a of actions) {
+      try {
+        switch (a.type) {
+          case 'navigate':
+            if (VIEWS[a.view]) { showView(a.view); if (a.view === 'codes') setCodeSearch(''); res.steps.push({ text: 'Opened ' + VIEWS[a.view], nav: true }); }
+            break;
+          case 'safety_tab':
+            if (TABS[a.tab]) { showView('safety'); showFormTab(a.tab); res.steps.push({ text: 'Opened Safety Forms → ' + TABS[a.tab], nav: true }); }
+            break;
+          case 'fill': res.steps.push(...doFill(a)); break;
+          case 'calc': res.steps.push(...doCalc(a)); break;
+          case 'save': res.steps.push(...doSave(a.what)); break;
+          case 'search_codes': {
+            const q = String(a.query || '').trim().slice(0, 60);
+            if (!q) break;
+            showView('codes');
+            const n = setCodeSearch(q);
+            res.steps.push(n
+              ? { text: n + ' NFPA ' + (n === 1 ? 'code matches' : 'codes match') + ' “' + q + '”' }
+              : { text: 'No NFPA code in the short list matched “' + q + '”. The Codes screen links to the full NFPA list.', bad: true });
+            break;
+          }
+          case 'ask': if (a.question) res.ask = String(a.question).slice(0, 400); break;
+          case 'help': res.help = true; break;
+          case 'close': res.close = true; break;
+        }
+      } catch (err) {
+        console.error('Voice action failed', a, err);
+        res.steps.push({ text: 'Something went wrong with that step', bad: true });
+      }
+    }
+    // Several "Opened …" lines are noise; keep only the last one.
+    const lastNav = res.steps.map(s => !!s.nav).lastIndexOf(true);
+    res.steps = res.steps.filter((s, i) => !s.nav || i === lastNav);
+    return res;
+  }
+
+  async function handleUtterance(text, token) {
+    ui('thinking', 'Working on it…', '“' + text + '”');
+    const plan = await interpret(text);
+    if (token !== V.token) return;
+
+    if (plan.error) { showSteps([]); return ui('error', 'Couldn’t reach voice AI', plan.error); }
+
+    const out = await runActions(plan.actions || []);
+    if (out.close) return closeVoice();
+    if (out.ask) {
+      closeVoice();
+      openAI();
+      $('aiInput').value = out.ask;
+      return sendAI();
+    }
+    if (out.help) {
+      showSteps([{ text: 'Open or jump to any screen: “job notes”, “safety forms”, “NFPA codes”', note: true }, { text: 'Fill forms: “start a JSA for Warehouse 12, second floor”', note: true }, { text: 'Do the math: “convert 12 feet 6 inches”, “3/8 as a decimal”', note: true }, { text: 'Look up a code: “find NFPA 25”', note: true }, { text: 'Ask anything: “what is an FDC?”', note: true }]);
+      return ui('idle', 'Here’s what you can say', '');
+    }
+
+    showSteps(out.steps);
+    const bad = out.steps.some(s => s.bad);
+    const calcs = out.steps.filter(s => s.calc).map(s => s.text);
+    const line = plan.say || (out.steps.length ? '' : 'Sorry, I didn’t catch a command.');
+    if (!out.steps.length) {
+      ui('error', line, '“' + text + '”');
+      return speak(line);
+    }
+    ui(bad ? 'error' : 'done', bad ? 'One thing to fix' : (line || 'Done'), '“' + text + '”');
+    if (plan.offline) showSteps(out.steps.concat([{ text: 'Voice AI is offline, so I used basic matching.', note: true }]));
+    // Read calculator results from the calculator itself, not from the model's wording.
+    speak(calcs.length ? calcs.join('. ') : (bad ? out.steps.find(s => s.bad).text : line));
+    if (!bad) V.closeTimer = setTimeout(() => { if (V.state === 'done') closeVoice(); }, calcs.length || out.steps.length > 2 ? 6000 : 3200);
+  }
+
+  /* ---------- wiring ---------- */
+  function runText(text) {
+    cancelCapture();
+    const token = V.token;
+    openSheet();
+    showSteps([]);
+    handleUtterance(text, token);
+  }
+
+  const chips = $('voiceChips');
+  EXAMPLES.forEach(t => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'voice-chip';
+    b.textContent = '“' + t + '”';
+    b.addEventListener('click', () => runText(t));
+    chips.appendChild(b);
+  });
+
+  // "Speak confirmations" is shared with the AI chat's "Read AI replies out loud" switch.
+  try {
+    const saved = localStorage.getItem('fitterfield-speak');
+    if (saved !== null) { $('voiceSpeak').checked = saved === '1'; $('speakReplies').checked = saved === '1'; }
+  } catch (e) { /* storage blocked */ }
+  const syncSpeak = (from, to) => from.addEventListener('change', () => {
+    to.checked = from.checked;
+    if (!from.checked && 'speechSynthesis' in window) speechSynthesis.cancel();
+    try { localStorage.setItem('fitterfield-speak', from.checked ? '1' : '0'); } catch (e) { /* ignore */ }
+  });
+  syncSpeak($('voiceSpeak'), $('speakReplies'));
+  syncSpeak($('speakReplies'), $('voiceSpeak'));
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('voiceSheet').classList.contains('open')) closeVoice(); });
+  ui('idle');
+
+  // exposed for tests
+  window.__voice = { localParse, runText, interpret };
+})();
+</script>
+</body></html>
